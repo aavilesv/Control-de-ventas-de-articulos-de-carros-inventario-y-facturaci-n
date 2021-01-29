@@ -1,0 +1,175 @@
+{% extends 'projecbase.html' %}
+{% load staticfiles %}
+{% block contenid %}
+    <div class="card">
+        <div class="card-header">
+            <div class="form-group text">
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                                    <span class="badge badge-secondary">
+                                    <i class="fa fa-users fa-2x"></i></span></li>
+                    <li class="list-inline-item">     <h2 class="text-secondary"><strong>{% if  venta.count == 1 %}
+                            {{ model }}
+                            {% elif venta.count > 1 %}
+                                {{ model }}s
+                                {% else %}
+                                {{ model }}
+                        {% endif %}</strong></h2>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group text">
+                        <br>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <span class="hint--bottom-left  hint--success"
+                                      aria-label="Nuevo Registro">
+                                    <button  onclick="myFunction('{{ ruta }}?action=add&id='+'')"
+                                             data-backdrop="static" data-keyboard="false" class="btn btn-success btn-md"  value="1"
+                                             href="#mdsucur"  rel="action" data-toggle="modal">
+
+                                    <i class="fa fa-plus"></i>
+                                </button></span>
+                            </li>
+                            <li class="list-inline-item">
+                                  <span class="hint--bottom-left  hint--info" aria-label="Imprimir">
+                                      <a
+                                                    href="{{ ruta }}?imprime=imprimir"
+                                                    class="btn btn-outline-info btn-md hint--bottom-left  hint--info"
+                                                    data-original-title="Imprimir"  target="_blank">
+                                                <i class="ti-printer"></i>
+                                            </a>
+                                    </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content-panel">
+                        <div class="table-responsive">
+                            <table id="" cellspacing="0" width="100%"
+                                   class="table table-striped table-bordered table-advance table-hover display nowrap myTable">
+                                <thead>
+                                <tr class="table-info">
+
+                                    <th>
+                                        <i class="ti-user" aria-hidden="true"> Nombres y Apellidos</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-address-card" aria-hidden="true"> Cedula</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-phone" aria-hidden="true"> Celular</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-home" aria-hidden="true"> Dirección</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-envelope" aria-hidden="true"> Email</i>
+                                    </th>
+
+                                    <th>
+                                        <i class="fa fa-cog" aria-hidden="true"> Acción</i>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for cli in cliente %}
+                                    <tr class="p-0 m-0">
+
+
+
+                                        <td class="p-2 m-0">{{ cli.nombre }}</td>
+                                        <td class="p-2 m-0">{{ cli.ced_ruc }}</td>
+                                        <td class="p-2 m-0">{{ cli.telefono }}</td>
+
+                                        <td class="p-2 m-0">{{ cli.direccion }}</td>
+                                        <td class="p-2 m-0">{{ cli.email }}</td>
+
+
+                                        <td class="p-2 m-0">
+                                            <button  onclick="myFunction('{{ ruta }}?action=ver&id='+ '{{ cli.id }}')"
+                                                     data-backdrop="static" data-keyboard="false" class="btn btn-success btn-sm rounded-circle"  value="1"
+                                                     href="#mdsucur"  rel="action" data-toggle="modal">
+                                    <span class="hint--bottom-left  hint--success"
+                                          aria-label="Ver">
+                                    <i class="ti-eye"></i></span>
+                                            </button>
+                                            <button onclick="myFunction('{{ ruta }}?action=edit&id='+ '{{ cli.id }}')"
+                                                    href="#mdsucur"  rel="action" data-toggle="modal"
+                                                    data-backdrop="static" data-keyboard="false"  class="btn btn-primary rounded-circle btn-sm edit">
+                                    <span class="hint--bottom-left  hint--info"
+                                          aria-label="Editar"><i class="fa fa-pencil"></i>
+                                    </span>
+                                            </button>
+                                            <button onclick="myFunction('{{ ruta }}?action=elim&id='+ '{{ cli.id }}')" href="#mdsucur" data-toggle="modal" rel="action"
+                                                    data-backdrop="static" data-keyboard="false"  class="btn btn-danger rounded-circle btn-sm button"   data-toggle="modal">
+                                    <span class="hint--bottom-left  hint--error"
+                                          aria-label="Eliminar"><i class="fa fa-trash-o "></i>
+                                    </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="100"> <center>No existen registros</center></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- .card -->
+        </div><!--/.col-->
+    </div>
+{% endblock %}
+{% block frmodal %}
+    <div class="modal face animated rotateIn" id="mdsucur"  role="dialog">
+    </div>
+{% endblock %}
+{% block jscript %}
+    <script>
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    title: 'Información!',
+                    text: '{{ message }}',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#71C78D",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            {% endfor %}
+        {% endif %}
+        $("#btnPdf").click(function() {
+            alert("Handler for .click() called.");
+            $.ajax({
+                type:"GET",
+                url: '{{ ruta }}',
+                data: {
+                    'action':'imprimir'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.resp == true) {
+                        window.location.reload();
+                    } else {
+                        alert('holasdsd');
+                    }
+                }
+            });
+        });
+        function myFunction(url) {
+            $('#mdsucur').load(url,function () {
+                $('#mdsucur').modal({backdrop: 'static', keyboard: false,show:true,remote:false});
+            });
+            return false;
+        }
+    </script>
+{% endblock %}

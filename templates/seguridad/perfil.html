@@ -1,0 +1,191 @@
+{% extends 'projecbase.html' %}
+{% load staticfiles %}
+{% block contenid %}
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="form-group text">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                    <span class="badge badge-secondary">
+                                    <i class="fa fa-industry fa-2x"></i></span></li>
+                            <li class="list-inline-item">     <h2 class="text-secondary"><strong>{{ model }}</strong></h2>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="container">
+                    <br>
+                    <div class="col-xs-12 col-md-1"></div>
+                    <div class="col-xs-12 col-md-10">
+                        <div class="container-fluid">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 CLASS="text-center">PERFIL DE USUARIO</h3>
+                                </div>
+                            <div class="form-group text">
+                        <br>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <span class="hint--bottom-left  hint--info"
+                                      aria-label="Editar Perfil">
+                                    <button  onclick="myFunction('{{ ruta }}?action=edit&id='+'{{ empleado.user.id }}')"
+                                             data-backdrop="static" data-keyboard="false" class="btn btn-primary btn-md"  value="1"
+                                             href="#mdperfil"  rel="action" data-toggle="modal">
+
+                                    <i class="fa fa-pencil"></i>
+                                </button></span>
+                            </li>
+                        </ul>
+                    </div>
+                                <div class="panel-body">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group has-success">
+                                        <span class="hint--top-right hint--info"
+                                              aria-label="Ver imagen">
+                                            <center> <a href="/media/{{ empleado.image }}" data-lightbox="mygallery"
+                                                        data-title="{{ empleado.user.user.first_name }} {{ empleado.user.last_name }}">
+                                                <img  src="/media/{{ empleado.image }}"  class="rounded-circle center"
+                                                      alt="Responsive image"  style="height: 300px;" ></a> </center>
+                                       </span>
+                                            </div></div>
+
+
+                                        <div class="col-6">
+                                            <form>
+                                                <fieldset disabled>
+
+                                                    <div class="form-group has-success">
+                                                        <label for="username" class="control-label mb-1">Nombre de Usuario:</label>
+                                                        <input id="username" name="username" type="text" {% if action == 'edit' %} disabled {% endif %}
+                                                               style="background-color: #f9f9f9;" onKeyPress="return sololetrasynumeros(event)" class="form-control valid" data-val="true"
+                                                               data-val-required="Please enter the name on card"
+                                                               autocomplete="cc-name" aria-required="true"
+                                                               aria-invalid="false" aria-describedby="cc-name"
+                                                               minlength="4" maxlength="30" value ='{{ empleado.user.username }}' required="true">
+                                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                    <div class="form-group has-success">
+                                                        <label for="first_name" class="control-label mb-1">Nombres:</label>
+                                                        <input id="first_name" name="first_name" type="text"
+                                                               style="background-color: #f9f9f9;" onKeyPress="return sololetras(event)" class="form-control valid" data-val="true"
+                                                               data-val-required="Please enter the name on card"
+                                                               autocomplete="cc-name" aria-required="true"
+                                                               aria-invalid="false" aria-describedby="cc-name"
+                                                               minlength="4" maxlength="30" value ='{{ empleado.user.first_name }}' required="true">
+                                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="last_name" class="control-label mb-1">Apellidos:</label>
+                                                        <input type="text" class="form-control " name="last_name" minlength="7" maxlength="60" onKeyPress="return sololetras(event)"
+                                                               id="last_name" value ='{{ empleado.user.last_name }}' required="true" >
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-6">
+                                                            <div class="form-group">
+                                                                <label for="cedula" class="control-label mb-1">Cédula:</label>
+                                                                <input id="cedula" name="cedula" type="text" class="form-control cc-name valid"
+                                                                       minlength="10" maxlength="10" onKeyPress="return soloNumeros(event)"
+                                                                       data-val="true" data-val-required="Please enter the name on card" autocomplete="cc-name" required="true"
+                                                                       value ='{{ empleado.cedula }}'>
+                                                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="form-group">
+                                                                <label for="celular" class="control-label mb-1">Celular:</label>
+                                                                <input id="celular" name="celular" type="text" class="form-control cc-name valid"
+                                                                       minlength="7" maxlength="10" onKeyPress="return soloNumeros(event)"
+                                                                       data-val="true" data-val-required="Please enter the name on card" autocomplete="cc-name" required="true"
+                                                                       value ='{{ empleado.celular }}'>
+                                                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group has-success">
+                                                        <label for="email" class="control-label mb-1">Email:</label>
+                                                        <input id="email" name="email" type="email"
+                                                               class="form-control cc-name valid" data-val="true"
+                                                               autocomplete="cc-name" value ='{{ empleado.user.email }}' minlength="8" maxlength="60" required="true">
+                                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                    <div class="form-group has-success">
+                                                        <label for="direcion" class="control-label mb-1">Dirección:</label>
+                                                        <input id="direcion" name="direcion" type="text"
+                                                               class="form-control cc-name valid" data-val="true"
+                                                               autocomplete="cc-name" value ='{{ empleado.direcion }}' minlength="4" maxlength="60" required="true">
+                                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                    </div>
+
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- .card -->
+        </div><!--/.col-->
+    </div>
+{% endblock %}
+{% block frmodal %}
+    <div class="modal face animated rotateIn" id="mdperfil"  role="dialog">
+    </div>
+{% endblock %}
+{% block jscript %}
+    <script>
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    title: 'Información!',
+                    text: '{{ message }}',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#71C78D",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            {% endfor %}
+        {% endif %}
+        $("#btnPdf").click(function() {
+            alert("Handler for .click() called.");
+            $.ajax({
+                type:"GET",
+                url: '{{ ruta }}',
+                data: {
+                    'action':'imprimir'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.resp == true) {
+
+                        window.location.reload();
+                    } else {
+                        alert('holasdsd');
+                    }
+                }
+            });
+        });
+
+
+        function myFunction(url) {
+            $('#mdperfil').load(url,function () {
+                $('#mdperfil').modal({backdrop: 'static', keyboard: false,show:true,remote:false});
+            });
+            return false;
+        }
+    </script>
+{% endblock %}

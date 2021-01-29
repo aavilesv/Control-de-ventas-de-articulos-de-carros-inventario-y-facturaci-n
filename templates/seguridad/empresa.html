@@ -1,0 +1,142 @@
+{% extends 'projecbase.html' %}
+{% load staticfiles %}
+{% block contenid %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="form-group text">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                    <span class="badge badge-secondary">
+                                    <i class="fa fa-industry fa-2x"></i></span></li>
+                            <li class="list-inline-item">     <h2 class="text-secondary"><strong>{{ model }}</strong></h2>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            <br>
+            <br>
+            <div class="container">
+                <div class="content-panel">
+                    <div class="table-responsive">
+                        <table  cellspacing="0" class="table table-striped table-bordered table-advance table-hover display">
+                            <thead>
+                            <tr class="table-info">
+                                <th>
+                                    <i class="fa fa-image" aria-hidden="true"> Foto</i>
+                                </th>
+                                <th>
+                                    <i class="fa fa-user-circle-o" aria-hidden="true"> Nombre</i>
+                                </th>
+                                <th>
+                                    <i class="fa fa-address-card" aria-hidden="true"> Ruc</i>
+                                </th>
+                                <th>
+                                    <i class="fa fa-phone" aria-hidden="true"> Telefono</i>
+                                </th>
+                                <th>
+                                    <i class="fa fa-home" aria-hidden="true"> Dirección</i>
+                                </th>
+                                <th>
+                                    <i class="fa fa-envelope" aria-hidden="true"> Email</i>
+                                </th>
+                                <th class="p-0 m-0">
+                                    <i class="fa fa-cog" aria-hidden="true"> Acción</i>
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for empr in empresa %}
+                                <tr class="p-0 m-0">
+                                    <td class="p-2 m-0">
+                                         <span class="hint--top-right hint--info"
+                                               aria-label="Ver imagen">
+                                        <div class="pull-left image">
+                                            <center> <a href="/media/{{ empr.image }}" data-lightbox="mygallery"
+                                                        data-title="{{ empr.nombre }}"><img  src="/media/{{ empr.image }}" title="ver imagen" class="img-fluid center" alt="Responsive image" style="width:100px; height:100px;"  ></a> </center>
+                                        </div></span>
+                                    </td>
+                                    <td class="p-2 m-0">{{ empr.nombre }}</td>
+                                    <td class="p-2 m-0">{{ empr.ruc }}</td>
+                                    <td class="p-2 m-0">{{ empr.celular }}</td>
+                                    <td class="p-2 m-0">{{ empr.direcion }}</td>
+                                    <td class="p-2 m-0">{{ empr.email }}</td>
+                                    <td class="p-2 m-0">
+                                        <button onclick="myFunction('{{ ruta }}?action=edit&id='+ '{{ empr.id }}')"
+                                                href="#mdemp"  rel="action" data-toggle="modal"
+                                                data-backdrop="static" data-keyboard="false"  class="btn btn-primary rounded-circle btn-sm edit">
+                                    <span class="hint--bottom-left  hint--info"
+                                          aria-label="Editar"><i class="fa fa-pencil"></i>
+                                    </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="7"> <center>No existen registros</center></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div> <!-- .card -->
+        </div><!--/.col-->
+    </div>
+{% endblock %}
+{% block frmodal %}
+    <div class="modal face animated rotateIn" id="mdemp"  role="dialog">
+    </div>
+{% endblock %}
+{% block jscript %}
+    <script>
+        $('.myTable').stacktable();
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    title: 'Información!',
+                    text: '{{ message }}',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#71C78D",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            {% endfor %}
+        {% endif %}
+        $("#btnPdf").click(function() {
+            alert("Handler for .click() called.");
+            $.ajax({
+                type:"GET",
+                url: '{{ ruta }}',
+                data: {
+                    'action':'imprimir'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.resp == true) {
+
+                        window.location.reload();
+                    } else {
+                        alert('holasdsd');
+                    }
+                }
+            });
+        });
+
+
+        function myFunction(url) {
+            $('#mdemp').load(url,function () {
+                $('#mdemp').modal({backdrop: 'static', keyboard: false,show:true,remote:false});
+            });
+            return false;
+        }
+    </script>
+{% endblock %}

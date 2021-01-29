@@ -1,0 +1,555 @@
+{% extends 'projecbase.html' %}
+{% load staticfiles %}
+{% block contenid %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header"><strong> Cliente </strong></h5>
+                        <div class="card-body">
+                            <h5 class="card-title"><strong>Buscar por:</strong></h5>
+
+                            <div class="form-group">
+                                <label for="proveedor" class="control-label mb-1">Ruc o nombre:</label>
+                                <span class="hint--top-left  hint--info"
+                                      aria-label="Elegir proveedor">
+                                        <select class="chosen-select form-control list" id="cccliente" name="proveedor"
+                                                data-placeholder="Seleccione Proveedor">
+                                     <option value="" selected disabled hidden>Seleccione un Ruc o Nombre</option>
+                                            {% for p in cliente %}
+                                                <option value="{{ p.id }}"
+                                                        data-cjson='{"nombre":"{{ p.nombre }}","telefono":"{{ p.telefono }}","direc":"{{ p.direccion }}","email":"{{ p.email }}"}'
+
+                                                        {{ 'selected' }} >{{ p.ced_ruc }} : {{ p.nombre }}</option>
+                                            {% endfor %}
+
+                                        </select></span>
+                            </div>
+
+                            <div class="form-group has-success">
+                                <label for="nombre" class="control-label mb-1">Cliente:</label>
+                                <input id="nombre" name="nombre" type="text"
+                                       style="background-color: #f9f9f9;"  disabled style="background-color: white;" class="form-control valid" data-val="true"
+                                       data-val-required="Please enter the name on card"
+                                       autocomplete="cc-name" aria-required="true"
+                                       aria-invalid="false" aria-describedby="cc-name"
+                                       minlength="4" maxlength="30" value ='' required="true">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="telefono" class="control-label mb-1">Telefono:</label>
+                                        <input id="telefono" name="telefono" type="text"
+                                               style="background-color: #f9f9f9;"  disabled style="background-color: white;" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card"
+                                               autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="30" value ='' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group has-success">
+                                        <label for="direccion" class="control-label mb-1">Dirección:</label>
+                                        <input id="direccion" name="direccion" type="text"
+                                               style="background-color: #f9f9f9;"  disabled style="background-color: white;" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card"
+                                               autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="30" value ='' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group has-success">
+                                <label for="email" class="control-label mb-1">E-mail:</label>
+                                <input id="email" name="email" type="text"
+                                       style="background-color: #f9f9f9;"  disabled style="background-color: white;" class="form-control valid" data-val="true"
+                                       data-val-required="Please enter the name on card"
+                                       autocomplete="cc-name" aria-required="true"
+                                       aria-invalid="false" aria-describedby="cc-name"
+                                       minlength="4" maxlength="30" value ='' required="true">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <h5 class="card-header"><strong> Articulo </strong></h5>
+                        <div class="card-body">
+                            <form id="frm-additem" class="from-control">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+
+                                            <button class="btn btn-info form-control"
+                                                    id="btn-agregar" placeholder="">
+                                                <i class="glyphicon glyphicon-plus">Insertar</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="articulo" class="control-label mb-1">Articulo:</label>
+
+                                    <select class="chosen-select form-control list" id="cbarticuloo" name="articulo"
+                                            data-placeholder="Seleccione articulo">
+                                        <option value="" selected disabled hidden>Seleccione un articulo</option>
+                                        {% for a in articul  %}
+                                            <option value="{{ a.id }}"
+                                                    data-ajson='{"id":"{{ a.id }}","precio":"{{ a.precio }}","image":"{{ a.image }}","stock":"{{ a.stock }}"}'>{{ a.nombre }} , {{ a.descripcion }}  </option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+
+                                            <div class="form-group has-success">
+                                                <label for="stock" class="control-label mb-1">Cantidad:</label>
+                                                <span class="hint--bottom-left  hint--info"
+                                                      aria-label="Insertar cantidad">
+                                                <input id="art-cantidad" name="stock" type="number"
+                                                       style="background-color: #f9f9f9;"    class="form-control valid" data-val="true"
+                                                       data-val-required="Please enter the name on card"
+                                                       autocomplete="cc-name" aria-required="true"
+                                                       aria-invalid="false" aria-describedby="cc-name"
+                                                       minlength="1" maxlength="30" value =''
+                                                        required="true"></span>
+                                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group has-success">
+                                                <label for="precio" class="control-label mb-1">Precio($):</label>
+                                                <input id="art-precio" name="precio" type="text"
+                                                       style="background-color: #f9f9f9;"  disabled  class="form-control valid" data-val="true"
+                                                       data-val-required="Please enter the name on card"
+                                                       autocomplete="cc-name" aria-required="true"
+                                                       aria-invalid="false" aria-describedby="cc-name"
+                                                       minlength="1" maxlength="30" value ='' required="true">
+                                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label for="imagen" class="control-label mb-1">Imagen:</label>
+                                        <span class="hint--top-left  hint--info"
+                                              aria-label="Ver imagen">
+                              <div class="pull-bottom image">
+                                  <a href="/media/46871.jpeg" id="ref" data-lightbox="mygallery" data-title="">
+                                                            <img  src="/media/46871.jpeg" id="image" class="img-fluid center" alt="Responsive image" style="width:100px; height:100px;"  ></a>
+                              </div></span>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>    </div>
+
+        </div>
+
+    </div>
+    <!--- aqui--->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card bg-light   mb-1">
+                <div class="card-header"><strong> Detalle de Articulo</strong></div>
+                <div class="card-body">
+
+                    <div class="card bg-light mb-3">
+
+                        <div class="card-body">
+
+                            <div class="row">
+
+                                <div class="col-lg-8">
+
+                                    <div class="table-responsive">
+                                        <table  cellspacing="0" width="100%"
+                                                class="table table-striped table-bordered table-advance table-hover display nowrap">
+                                            <thead>
+                                            <tr class="table-info">
+
+                                            <th><i class="fa fa-align-justify" aria-hidden="true"> Nombre</i>
+                                                </th>
+                                                <th >
+                                                    <i class="fa fa-money" aria-hidden="true"> Precio</i>
+                                                </th>
+                                                <th><i class="fa fa-circle" aria-hidden="true"> Cantidad</i>
+                                                </th>
+                                                <th> <i class="fa fa-money" aria-hidden="true"> Total</i>
+                                                </th>
+                                                <th COLSPAN=3 class="col-xs-1">
+                                                    <i class="fa fa-cog" aria-hidden="true"> Acción</i>
+                                                </th>
+
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tdetalle">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+
+                                    <div class="table-responsive">
+                                        <table cellspacing="0" width="100%"
+                                               class="table table-striped table-bordered table-advance table-hover display nowrap">
+                                            <tbody class="col-lg-12">
+
+                                            <tr class="row">
+
+                                                <td class="col-lg-8">
+
+                                                    <div class="form-group has-success">
+                                                        <label for="subtotal" class="control-label punto mb-1"><strong>  .Subtotal:</strong></label>
+                                                        <input id="id_msubtotal" name="subtotal" type="text"
+                                                               style="background-color: #f9f9f9;"  disabled  class="form-control valid" placeholder="0.00"
+                                                               required="true">
+                                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                    </div>
+
+                                                </td>
+                                                <td class="col-lg-4">
+                                                    <div class="form-group has-success">
+                                                        <label for="id_miva" class="control-label mb-1"><strong> Iva:</strong></label>
+                                                        <input id="id_miva" name="id_miva" type="text"
+                                                               style="background-color: #f9f9f9;"  disabled  class="form-control valid" placeholder="12%"
+                                                               required="true">
+                                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+
+                                                    <div class="form-group has-success">
+                                                        <label for="id_mtotal" class="control-label mb-1"><strong> Total a Pagar($):</strong></label>
+                                                        <input id="id_mtotal" name="id_mtotal" type="text"
+                                                               style="background-color: #f9f9f9;"  disabled  class="form-control  punto valid" placeholder="0.00"
+                                                               required="true">
+                                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <button id="btn-registrar" class="btn btn-success"
+                                                type="submit">
+                                                                <span id="loading"
+                                                                      class="fa fa-save"></span>
+                                            <span id="caption"><strong>Registrar
+                                                                    </strong></span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger" id="cancelar"
+                                                onclick="window.location='{{ ruta }}'">
+                                            <span class="fa fa-trash-o">    </span>
+                                            Cancelar
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+{% block frmodal %}
+
+{% endblock %}
+{% block jscript %}
+    <script>
+    $('.punto').val($('.punto').val().replace(',', '.'));
+        $('.chosen-select').chosen();
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    title: 'Información!',
+                    text: '{{ message }}',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#71C78D",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            {% endfor %}
+        {% endif %}
+
+
+        $('#frm-additem').submit(function (e) {
+
+            if ($('#cccliente').val() >0) {
+                e.preventDefault();
+                var option = $('#cbarticuloo option:selected');
+                var cantidad = parseInt($('#art-cantidad').val());
+                var data = option.data('ajson');
+                var item = new Object();
+                item.id = data.id;
+                item.precio = parseFloat($('#art-precio').val());
+                item.descripcion = option.text();
+                item.cantidad = cantidad;
+                app.add(item);
+            }
+            else {
+                return false;
+            }
+        });
+        $('#cccliente').change(function () {
+            var cliente = $('#cccliente option:selected').data('cjson');
+            $('#nombre').val(cliente.nombre);
+            $('#telefono').val(cliente.telefono);
+            $('#direccion').val(cliente.direc);
+            $('#email').val(cliente.email);
+        });
+        var contsts=0
+        var iddd= 0
+        $('#cccliente').change();
+        $('#cbarticuloo').change(function () {
+            var option = $('#cbarticuloo option:selected');
+            if (option.val() != '') {
+                var articulo = option.data('ajson');
+                $('#art-cantidad').val(1);
+                //alert($('#cbarticulo').val());
+                document.getElementById("art-cantidad").max =  articulo.stock;
+                document.getElementById("art-cantidad").min =  0;
+                contsts =articulo.stock;
+                iddd = articulo.id;
+                $('#art-precio').val(articulo.precio);
+                $('#image').attr("src","/media/"+articulo.image);
+                $('#ref').attr("href","/media/"+articulo.image);
+            } else {
+                $('#art-cod').val('');
+                $('#art-cantidad').val('');
+                $('#art-precio').val('');
+                $('#image').attr("src","/static/images/empresa2_SWFXCGcy.jpg");
+
+                $('#ref').attr("href","/static/images/empresa2_SWFXCGcy.jpg");
+            }
+        });
+        $('#cbarticuloo').change();
+        $('#btn-registrar').click(function(){
+
+            if (app.venta.items.length > 0 && app.venta.total > 0) {
+                if ($('#cccliente').val()) {
+                    Swal.fire({
+                        title: "¿Estás Seguro registrar venta?",
+                        text: "Registrar venta",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, registrar",
+                        cancelButtonText: "Cancelar",
+                    })
+                        .then(resultado => {
+                            if (resultado.value) {
+                                app.venta.cliente = $('#cccliente').val();
+                                app.venta.fecha = $('#fecha').val();
+                                $.ajax({
+                                    type:"GET",
+                                    url: '{{ ruta }}',
+                                    data: {
+                                        'action':'cargaventa', venta: JSON.stringify(app.venta)
+                                    },
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        if (data.resp == true) {
+                                            window.location.reload();
+                                        } else {
+                                            Swal.fire({
+                                                title: 'Información!',
+                                                text: data.mensaje,
+                                                html:'{{ message }}',
+                                                showCloseButton: true,
+                                                confirmButtonColor: "#71C78D",
+                                                confirmButtonText: 'OK',
+                                                imageWidth: 400,
+                                                imageHeight: 200,
+                                                imageAlt: 'Custom image',
+                                            });
+                                        }
+                                    }
+                                });
+                                return true;
+                            } else {
+                            }
+                        });
+
+                }else{
+                    Swal.fire({
+                        title: 'Información!',
+                        text: 'Debe Seleccionar Cliente',
+                        html:'{{ message }}',
+                        showCloseButton: true,
+                        confirmButtonColor: "#71C78D",
+                        confirmButtonText: 'OK',
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    });
+
+                }
+            }else{
+                Swal.fire({
+                    title: 'Información!',
+                    text: 'Debe Seleccionar Articulos al Detalle',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#71C78D",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+
+            }
+        });
+        var app = {
+            venta: {
+                //cabecera
+                fecha: '',
+                cliente: 0,
+                subtotal: 0,
+                total: 0,
+                //detalle
+                items: []
+            },
+            add: function (item) {
+                if (!this.existe(item)) {
+                    var iva =0.12;
+                    item.subtotal  =(item.cantidad * item.precio)-(item.precio*iva);
+                    alert(item.subtotal);
+                    item.total =  item.subtotal;
+                    alert(item.total);
+                    this.venta.items.push(item);
+                }
+                this.actualizar();
+                this.presentar();
+
+                return true;
+            },
+            eliminar: function (id) {
+                for (var i in this.venta.items) {
+                    if (this.venta.items[i].id == id) {
+                        this.venta.items.splice(i,1);
+                        this.actualizar();
+                        this.presentar();
+                        return true;
+                    }
+                }
+                return false;
+            },
+            existe: function (item) {
+                for (var i in this.venta.items) {
+                    if (item.id == this.venta.items[i].id) {
+                            var con =this.venta.items[i].cantidad+ item.cantidad;
+                             if (con <= contsts){
+                                   this.venta.items[i].cantidad += item.cantidad;
+                             }
+                        this.venta.items[i].precio = item.precio;
+                        this.venta.items[i].subtotal = this.venta.items[i].cantidad * item.precio;
+                        this.venta.items[i].total = (this.venta.items[i].subtotal ) + this.venta.items[i].iva;
+                        return true;
+                    }
+                }
+                return false;
+            },
+            sumar: function (id,precio) {
+                for (var i in this.venta.items) {
+                    if (id == this.venta.items[i].id) {
+                        if(document.getElementById("art-cantidad").max >this.venta.items[i].cantidad){
+                             this.venta.items[i].cantidad +=1;
+                        this.venta.items[i].precio = precio;
+                        this.venta.items[i].subtotal = this.venta.items[i].cantidad *precio;
+                        this.venta.items[i].total = (this.venta.items[i].subtotal ) + this.venta.items[i].iva;
+                        this.actualizar();
+                        this.presentar();
+                        return true;
+                        }
+
+                    }
+                }
+                return false;
+            },
+
+            restar: function (id,precio) {
+                for (var i in this.venta.items) {
+                    if (id == this.venta.items[i].id) {
+                        if(this.venta.items[i].cantidad >1){
+                            this.venta.items[i].cantidad -=1;
+                            this.venta.items[i].precio = precio;
+                            this.venta.items[i].subtotal = this.venta.items[i].cantidad *precio;
+                            this.venta.items[i].total = (this.venta.items[i].subtotal ) + this.venta.items[i].iva;
+                            this.actualizar();
+                            this.presentar();
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            },
+
+            actualizar: function () {
+                this.venta.subtotal = 0;
+                var ivaa =0.12;
+                this.venta.descuento = 0;
+                this.venta.total = 0;
+                for (var item of this.venta.items) {
+                    this.venta.subtotal += item.subtotal-(item.subtotal*ivaa);
+                    this.venta.total +=  item.subtotal;
+                }
+                $('#id_msubtotal').val(this.venta.subtotal.toFixed(2));
+                $('#id_mtotal').val(this.venta.total.toFixed(2));
+            },
+            presentar: function () {
+                $('#tdetalle').html('');
+                for (var item of this.venta.items ){
+                    var tr = '<tr>';
+
+                    tr += '<td id="des">' + item.descripcion + '</td>';
+                    tr += '<td>$' + item.precio + '</td>';
+                    tr += '<td>' + item.cantidad + '</td>';
+                    tr += '<td>$' + item.subtotal + '</td>';
+                    tr +='<td class=""><button onclick="app.restar('+item.id+ ','+item.precio +')"  title="Restar"class="btn btn-warning"><i class="fa fa-minus"></i> </button></td>';
+                    tr +='<td class=""><button onclick="app.sumar('+ item.id +','+item.precio +')"  title="Sumar +1"class="btn btn-success"><i class="fa fa-plus"></i> </button></td>';
+                    tr +='<td class=""><button onclick="app.eliminar('+ item.id +')"  title="Eliminar"class="btn btn-danger"><i class="fa fa-trash-o"></i> </button></td>';
+                    tr += '</tr>';
+                    $('#tdetalle').append(tr);
+                }
+            },
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'loginbase.html' %}
+{% load staticfiles %}
+{% block contenid %}
+    <img class="wave" src="/static/img/wave.png">
+    <div class="container">
+        <div class="img">
+            <img src="/static/img/olvidopassword.svg">
+        </div>
+        <div class="login-content">
+            <form action="{{ ruta }}"  method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="recup">
+                <img src="/static/img/profile.svg">
+                <h3 class="title">RECUPERAR CUENTA</h3>
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div"><br>
+                        <input type="text" placeholder="Nombre de usuario"  onKeyPress="return sololetrasynumeros(event)" required="true" name="username" class="input">
+                    </div>
+                </div>
+                <div class="input-div pass">
+                    <div class="i">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="div">
+                        <input type="email" placeholder="Correo Electronico" required="true"  name="email" class="input">
+                    </div>
+                </div>
+                <a href="/seguridad/login/">Regresar</a>
+
+                <button type="submit" id="btnlogin" class="btn"/>Enviar
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block jscript %}
+<script>
+
+function sololetrasynumeros(e) {
+
+       tecla = (document.all) ? e.keyCode : e.which; // 2
+    if (tecla == 8)
+        return true; // 3
+    patron = /[A-Za-z\9123456780]/; // 4
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
+    }
+
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    title: 'Información!',
+                    text: '{{ message }}',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#71C78D",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            {% endfor %}
+        {% endif %}
+</script>
+
+    <script src="{% static "js/jsd.js"%}"></script>
+{% endblock %}

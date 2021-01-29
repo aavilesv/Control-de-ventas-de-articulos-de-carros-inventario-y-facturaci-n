@@ -1,0 +1,108 @@
+
+{% load staticfiles %}
+{% block frmodal %}
+
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"> <i class="fa fa-user fa-2x"></i></li>
+                        <li class="list-inline-item">
+                            <h3>  <strong class="card-title">{{ model }}</strong>
+                            </h3>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+            <form method="POST" action="{{ ruta }}" onsubmit="return todo()">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <input type="hidden" name="action" value="{{ action }}">
+                    <div class="row">
+                        <div class="col-lg-12">
+ <div class="form-group has-success">
+                                <label for="nombre" class="control-label mb-1"><span class="centroo">Nombre de Cliente:</span> </label>
+                                <input id="nombre" name="nombre" type="text" class="form-control valid" data-val="true"
+                                       data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                       aria-invalid="false" aria-describedby="cc-name"
+                                       minlength="4" maxlength="50" value ='{{ client.nombre }}' required="true" onKeyPress="return sololetras(event)">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+
+       <div class="form-group has-success text-align-center">
+                                <label for="ced_ruc" class="control-label mb-1">Cédula:</label>
+                                <input id="ced_ruc" name="ced_ruc" type="text"
+                                       class="form-control cc-name valid" data-val="true"
+                                       autocomplete="cc-name" value ='{{ client.ced_ruc }}' minlength="10" maxlength="13" required="true" onKeyPress="return soloNumeros(event)">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+
+       <div class="form-group has-success text-align-center">
+                                <label for="direccion" class="control-label mb-1">Dirección:</label>
+                                <input id="direccion" name="direccion" type="text"
+                                       class="form-control cc-name valid" data-val="true"
+                                       autocomplete="cc-name" value ='{{ client.direccion }}' minlength="5" maxlength="50" required="true">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+
+
+
+       <div class="form-group has-success">
+                                <label for="telefono" class="control-label mb-1">Celular:</label>
+                                <input id="telefono" name="telefono" type="text" minlength="6" maxlength="10"
+                                       class="form-control cc-name valid" data-val="true"
+                                       autocomplete="cc-name" value ='{{ client.telefono }}'  onKeyPress="return soloNumeros(event)" minlength="7" maxlength="10" required="true">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+              <div class="form-group">
+                                        <label for="email" class="control-label mb-1">E-mail:</label>
+                                        <input type="email" class="form-control " name="email" minlength="6" maxlength="50"
+                                               id="email" value ='{{ client.email }}' required="true" >
+                                    </div>
+
+
+                        </div><!--/.col-->
+                    </div>
+                        </div>
+                <div class="modal-footer">
+                 {% if action == 'ver' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-info"> <i class="fa fa-window-close"> Cerrar</i> </a>
+                    {% endif %}
+                        {% if action == 'add' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-danger"> <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-success">
+                            <i class="fa fa-save"> Guardar</i></button>
+                    {% endif %}
+                    {% if action == 'edit' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-danger"> <i class="fa fa-remove"> Cancelar</i>
+                        </a>
+                        <button type="submit" id="Dato" class="btn btn-success">
+                            <i class="fa fa-save"> Guardar</i></button>
+                    {% endif %}
+                       {% if action == 'elim' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-light">
+                            <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-danger">
+                            <i class="fa fa-save"> Eliminar</i></button>
+                    {% endif %}
+                </div>
+            </form>
+        </div></div>
+{% endblock %}
+{% block jscript %}
+    <script type='text/javascript'>
+    $('.chosen-select').chosen();
+      $('#Dato').click(function(){
+
+            $("input").prop('disabled', false);
+        });
+          if ('ver'=='{{ action }}' || 'elim' =='{{ action }}'){
+         $('input').prop("disabled", true);
+        }
+
+    </script>
+{% endblock %}

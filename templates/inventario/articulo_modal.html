@@ -1,0 +1,338 @@
+
+{% load staticfiles %}
+{% block frmodal %}
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"> <i class="fa fa-font fa-2x"></i></li>
+                        <li class="list-inline-item">
+                            <h3>  <strong class="card-title">{{ model }}</strong>
+                            </h3>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+            <form method="POST" action="{{ ruta }}" onsubmit="return todo()" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <input type="hidden" name="action" value="{{ action }}">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="group" class="control-label mb-1">Sucursal:</label>
+                                        <select class="chosen-select form-control list"  id="articulosucursal" name="sucursal"
+                                                data-placeholder="Sucursal" >
+
+                                            {% if action == 'edit' %}
+                                                <option value="{{ articulo.sucursal.id }}">Sucursal seleccionado: {{ articulo.sucursal.razonsocial }}</option>
+                                            {% elif action == 'elim' %}
+
+                                                <option value="{{ articulo.sucursal.id }}" selected disabled>{{ articulo.sucursal.razonsocial }}</option>
+                                            {% elif action == 'ver' %}
+                                                <option value="{{ articulo.sucursal.id }}" selected disabled>{{ articulo.sucursal.razonsocial }}</option>
+                                            {% elif action == 'add' %}
+
+                                                <option value="" selected disabled hidden>Seleccione una sucursal</option>
+                                            {% endif %}
+                                            {% if action == 'add' or action == 'edit' %}
+                                                {% for g in sucursa %}
+                                                    <option value="{{ g.id }}">{{ g.razonsocial }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div></div>
+                            <div class="row">
+
+                                <div class="col-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="nombre" class="control-label mb-1">Nombre:</label>
+                                        <input id="nombre" name="nombre" type="text" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="50" value ='{{ articulo.nombre }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div></div>
+                                <div class="col-6"><div class="form-group">
+                                    <label for="articulo" class="control-label mb-1">Marca:</label>
+                                    <select class="chosen-select form-control list" id="marca" name="marca"
+                                            data-placeholder="Marca">
+                                        {% if action == 'edit' %}
+                                            <option value="{{ articulo.marca.id }}">Marca seleccionada: {{  articulo.marca.nombre }}</option>
+                                        {% elif action == 'elim' %}
+                                            <option value="{{ articulo.marca.id }}" selected disabled>{{  articulo.marca.nombre }}</option>
+                                        {% elif action == 'ver' %}
+                                            <option value="{{ articulo.marca.id }}" selected disabled>{{  articulo.marca.nombre }}</option>
+
+                                        {% elif action == 'add' %}
+                                            <option value="0" selected disabled hidden>Seleccione una Marca</option>
+
+                                        {% endif %}
+                                        {% if action == 'add' or action == 'edit' %}
+                                            {% for g in marc %}
+                                                <option value="{{ g.id }}">{{ g.nombre }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="descripcion" class="control-label mb-1">Descripción:</label>
+                                        <input id="descripcion" name="descripcion" type="text"
+                                               class="form-control cc-name valid" data-val="true"
+                                               autocomplete="cc-name" value ='{{ articulo.descripcion }}' minlength="4" maxlength="60" required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="descuento" class="control-label mb-1">Descuento (%):</label>
+                                        <input type="number" class="form-control " name="descuento" minlength="1" maxlength="10" onKeyPress="return soloNumeros(event)"
+                                               id="descuento"   {% if articulo.descuento %} value ='{{ articulo.descuento }}' {% else %}
+                                               value ='0'
+                                        {% endif %} min="0" max="100" required="true" >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="stock" class="control-label mb-1">Stock:</label>
+                                        <input id="stock" name="stock" type="number"
+                                               class="form-control cc-name valid" data-val="true"
+                                               autocomplete="cc-name"  {% if articulo.stock %} value ='{{ articulo.stock }}' {% else %}
+                                               value ='0'
+                                        {% endif %}  max="100000"  min="0" minlength="4" maxlength="50" required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="subtotal" class="control-label mb-1">Subtotal ($):</label>
+                                                <input type="text" class="form-control " name="subtotal" minlength="1" maxlength="30" onKeyPress="return soloNumerospunto(event)"
+                                                       id="subtotall" value ='{{ articulo.subtotal }}' min="0" max="100000" required="true" placeholder="4554.44">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="iva" class="control-label mb-1">Iva (%):</label>
+                                                <input type="number" class="form-control " name="iva" minlength="1"
+                                                       maxlength="133" onKeyPress="return soloNumeros(event)"
+                                                       min="12" max="12" id="iva" {% if articulo.iva %} value ='{{ articulo.iva }}' {% else %}
+                                               value ='12'
+                                        {% endif %} required="true" >
+                                            </div></div></div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="status" class="control-label mb-1">Estado:</label>
+                                        <input type="checkbox" class="form-control " name="status"
+                                               id="status" value ='{{ articulo.status }}'>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="precio" class="control-label mb-1">Total ($):</label>
+                                        <input id="precio" name="precio" type="text"
+                                               class="form-control cc-name valid" data-val="true"
+                                               autocomplete="cc-name" value ='{{ articulo.precio }}' disabled>
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="image" class="control-label mb-1">Imagen:</label>
+                                <input type="file" accept="image/*" class="form-control imagejs"  name="image"
+                                       id="imagesucursal" value =''  {% if  action == 'add' %} required="true" {% endif %}>
+                                <input  type="text" class="form-control text-center"
+                                        disabled
+                                        value ='{{ articulo.image }}'>
+                            </div>
+                        </div><!--/.col-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {% if action == 'ver' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-info"> <i class="fa fa-window-close"> Cerrar</i> </a>
+                    {% endif %}
+                    {% if action == 'add' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-danger"> <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-success">
+                            <i class="fa fa-save"> Guardar</i></button>
+                    {% endif %}
+                    {% if action == 'edit' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-danger"> <i class="fa fa-remove"> Cancelar</i>
+                        </a>
+                        <button type="submit" id="Dato" class="btn btn-success">
+                            <i class="fa fa-save"> Guardar</i></button>
+                    {% endif %}
+                    {% if action == 'elim' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-light">
+                            <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-danger">
+                            <i class="fa fa-save"> Eliminar</i></button>
+                    {% endif %}
+                </div>
+            </form>
+        </div></div>
+{% endblock %}
+{% block jscript %}
+    <script type='text/javascript'>
+    $('#precio').val($('#precio').val().replace(',', '.'));
+
+
+        $('.chosen-select').chosen();
+        $('#Dato').click(function(){
+
+            if (!($('#articulosucursal').val() > 0)) {
+                if ('add'=='{{ action }}'){
+                    Swal.fire({
+                        title: 'Información!',
+                        icon: 'info',
+                        text: 'Por favor elegir una Sucursal',
+                        html:'{{ message }}',
+                        showCloseButton: true,
+                        confirmButtonColor: "#33ECFF",
+                        confirmButtonText: 'OK',
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    });
+                    return false;}
+            }
+            if (!($('#marca').val() >0)) {
+                if ('add'=='{{ action }}'){
+                    Swal.fire({
+                        title: 'Información!',
+                        icon: 'info',
+                        text: 'Por favor elegir una Marca',
+                        html:'{{ message }}',
+                        showCloseButton: true,
+                        confirmButtonColor: "#33ECFF",
+                        confirmButtonText: 'OK',
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    });
+                    return false;}
+            }
+            $("input").prop('disabled', false);
+        });
+        if ('ver'=='{{ action }}' || 'elim' =='{{ action }}'){
+            $('input').prop("disabled", true);
+        }
+        $('.imagejs').on('change',function () {
+            var rutaimg = $('.imagejs').val();
+            var extension = rutaimg.substring(rutaimg.length - 3, rutaimg.length);
+            if (extension.toLowerCase() === 'png' || extension.toLowerCase() === 'jpg'  || extension.toLowerCase() === 'peg') {
+                $('.imagejs').fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
+            }
+            else{
+                $(".imagejs").val('');
+                Swal.fire({
+                    title: 'Información!',
+                    icon: 'info',
+                    text: 'Por favor elegir una imagen',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#33ECFF",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            }});
+         $('#descuento').on('change',function () {
+                var precio=0,iva=0
+                    precio=(parseFloat($("#subtotall").val())*(parseFloat($("#iva").val())/100)+parseFloat($("#subtotall").val()));
+                precio=precio.toFixed(2)-(parseFloat($("#descuento").val())/100)*precio
+                  $("#precio").val(precio.toFixed(2));
+                   $("#precio").prop("disabled", true);
+        });
+      $('#iva').on('change',function () {
+                var precio=0,iva=0
+                    precio=(parseFloat($("#subtotall").val())*(parseFloat($("#descuento").val())/100)+parseFloat($("#subtotall").val()));
+                precio=precio.toFixed(2)-(parseFloat($("#descuento").val())/100)*precio
+                  $("#precio").val(precio.toFixed(2));
+                  $("#precio").prop("disabled", true);
+        });
+        $('#subtotall').on('change',function () {
+
+            var cont=0
+            var ca=$("#subtotall").val();
+            var primero=ca.substring(0,1);
+            for (var i=0;i<ca.length;i++) {
+                cont = ("." != ca.substring(0,1))?0:null;
+                if ("." == ca.substring(i,i+1) && "." != ca.substring(0,1)){ cont =+1;
+                }
+            }
+
+            if (((cont !=1 && cont !=0) || primero =="." )){
+                $("#subtotall").val('');
+                Swal.fire({
+                    title: 'Información!',
+                    icon: 'info',
+                    text: 'Por favor digitar número correcto',
+                    html:'Por favor digitar número correcto',
+                    showCloseButton: true,
+                    confirmButtonColor: "#33ECFF",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            }else {
+                var precio=0,iva=0
+                    precio=(parseFloat($("#subtotall").val())*(parseFloat($("#iva").val())/100)+parseFloat($("#subtotall").val()));
+                var descuent =(parseFloat($("#descuento").val())/100)*precio;
+                  $("#precio").val(precio.toFixed(2)-(descuent.toFixed()));
+                    $("#precio").prop("disabled", true);
+            }
+
+        });
+
+        {% if  articulo.status %}
+            $("#status").prop("checked", true);
+        {% endif %}
+
+        $('#ivaaa').click(function(){
+            if ( $('#precio').val()!='') {
+                if($('#ivaaa').prop('checked') ) {
+                    var valor=parseFloat($('#precio').val())*0.12+parseFloat($('#precio').val());
+                    swal("Info!","Precio Total: $"+ Math.round(valor));
+                }
+            }
+            else {
+                $("#ivaaa").prop("checked", false);
+                swal("Info!","Ingrese precio por unidad");
+
+            }
+        });
+
+    </script>
+{% endblock %}

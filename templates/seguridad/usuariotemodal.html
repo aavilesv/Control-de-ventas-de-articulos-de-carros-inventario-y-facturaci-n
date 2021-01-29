@@ -1,0 +1,358 @@
+{% load staticfiles %}
+{% block frmodal %}
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"> <i class="fa fa-user fa-2x"></i></li>
+                        <li class="list-inline-item">
+                            <h3>  <strong class="card-title">Registro</strong>
+                            </h3>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <form method="POST" action="{{ ruta }}" onsubmit="return todocedula()" enctype="multipart/form-data">
+
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <input type="hidden" name="action" value="{{ action }}">
+
+                    <input type="hidden" id="chancontr" name="chancontr" value="">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="group" class="control-label mb-1">Sucursal:</label>
+                                        <select class="chosen-select form-control list" id="sucursal" name="sucursal"
+                                                data-placeholder="Sucursal">
+                                            {% if action == 'edit' %}
+                                                <option value="{{ empleado.sucursal.id }}">Sucursal seleccionado: {{ empleado.sucursal.razonsocial }}</option>
+                                            {% elif action == 'elim' %}
+
+                                                <option value="{{ empleado.sucursal.id }}" selected disabled>{{ empleado.sucursal.razonsocial }}</option>
+                                            {% elif action == 'ver' %}
+                                                <option value="{{ empleado.sucursal.id }}" selected disabled>{{ empleado.sucursal.razonsocial }}</option>
+                                            {% elif action == 'add' %}
+                                                <option value="" selected disabled hidden>Seleccione una Sucursal</option>
+
+                                            {% endif %}
+                                            {% if action == 'add' or action == 'edit' %}
+                                                {% for g in sucursal %}
+                                                    <option value="{{ g.id }}">{{ g.razonsocial }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+
+
+
+                                    {% if  empleado.user.is_superuser %}
+                                        <div class="form-group has-success">
+                                            <label for="groupp" class="control-label mb-1">Rol:</label>
+                                            <input id="groupp" name="groupp" type="text"
+                                                   style="background-color: #f9f9f9;" onKeyPress="return sololetras(event)" class="form-control valid" data-val="true"
+                                                   data-val-required="Please enter the name on card"
+                                                   autocomplete="cc-name" aria-required="true"
+                                                   aria-invalid="false" aria-describedby="cc-name" disabled
+                                                   minlength="4" maxlength="30" value ='{{ empleado.group.name }}' required="true">
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                        </div>
+                                    {% else %}
+
+                                        <div class="form-group">
+                                            <label for="group" class="control-label mb-1">Rol:</label>
+                                            <select class="chosen-select form-control list" id="group" name="group"
+                                                    data-placeholder="Rol">
+                                                {% if action == 'edit' %}
+                                                    <option value="{{ empleado.group.id }}">Rol seleccionado: {{ empleado.group.name }}</option>
+                                                {% elif action == 'elim' %}
+                                                    <option value="{{ empleado.group.id }}" selected disabled>{{ empleado.group.name }}</option>
+                                                {% elif action == 'add' %}
+                                                    <option value="" selected disabled hidden>Seleccione un rol</option>
+                                                {% elif action == 'ver' %}
+                                                    <option value="{{ empleado.group.id }}" selected disabled>{{ empleado.group.name }}</option>
+
+                                                {% endif %}
+                                                {% if action == 'add' or action == 'edit' %}
+                                                    {% for g in group %}
+                                                        <option value="{{ g.id }}">{{ g.name }}</option>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    {% endif %}
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group has-success">
+                                        <label for="username" class="control-label mb-1">Nombre de Usuario:</label>
+                                        <input id="username" name="username" type="text" {% if action == 'edit' %} disabled {% endif %}
+                                               style="background-color: #f9f9f9;" onKeyPress="return sololetrasynumeros(event)" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card"
+                                               autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="30" value ='{{ empleado.user.username }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div></div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="cedula" class="control-label mb-1">Cédula:</label>
+                                        <input id="cedula" name="cedula" type="text" class="form-control cc-name valid"
+                                               minlength="10" maxlength="10" onKeyPress="return soloNumeros(event)"
+                                               data-val="true" data-val-required="Please enter the name on card" autocomplete="cc-name" required="true"
+                                               value ='{{ empleado.cedula }}'>
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group has-success">
+                                        <label for="first_name" class="control-label mb-1">Nombres:</label>
+                                        <input id="first_name" name="first_name" type="text"
+                                               style="background-color: #f9f9f9;" onKeyPress="return sololetras(event)" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card"
+                                               autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="30" value ='{{ empleado.user.first_name }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div></div>
+                            <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="celular" class="control-label mb-1">Celular:</label>
+                                        <input id="celular" name="celular" type="text" class="form-control cc-name valid"
+                                               minlength="7" maxlength="10" onKeyPress="return soloNumeros(event)"
+                                               data-val="true" data-val-required="Please enter the name on card" autocomplete="cc-name" required="true"
+                                               value ='{{ empleado.celular }}'>
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="last_name" class="control-label mb-1">Apellidos:</label>
+                                        <input type="text" class="form-control " name="last_name" minlength="7" maxlength="60" onKeyPress="return sololetras(event)"
+                                               id="last_name" value ='{{ empleado.user.last_name }}' required="true" >
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group has-success">
+                                        <label for="direcion" class="control-label mb-1">Dirección:</label>
+                                        <input id="direcion" name="direcion" type="text"
+                                               class="form-control cc-name valid" data-val="true"
+                                               autocomplete="cc-name" value ='{{ empleado.direcion }}' minlength="4" maxlength="60" required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-6">
+                                    <div class="form-group has-success">
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">        <label for="password" class="control-label mb-1">Contraseña:</label>
+                                                <input autocomplete="new-password" id="password" name="password" type="password"
+                                                       class="form-control"
+                                                       value ='000000'
+                                                       minlength="6" maxlength="15" required="true"  readonly onfocus="this.removeAttribute('readonly');"
+                                                ></li>
+                                            <li class="list-inline-item">
+                                                <h3>  <strong class="hint--bottom-left"
+                                                              aria-label="Ver"><span id="clipassword" class="fa fa-eye fa-1x"></span></strong>
+                                                </h3>
+                                            </li>
+                                            {% if not action == 'add' %}
+                                                {% if not action == 'elim' %}
+                                                {% if not action == 'ver' %}
+
+                                                    <li class="list-inline-item">
+                                <span class="hint--bottom-left  hint--info"
+                                      aria-label="Cambiar Contraseña">
+                                    <button  id="changecontra"
+                                             class="btn btn-info btn-md"  >
+
+                                    <i class="ti-exchange-vertical"></i>
+                                </button></span>
+                                                    </li>{% endif %} {% endif %}{% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group has-success">
+                                        <label for="email" class="control-label mb-1">Email:</label>
+                                        <input id="email" name="email" type="email"
+                                               class="form-control cc-name valid" data-val="true"
+                                               autocomplete="cc-name" value ='{{ empleado.user.email }}' minlength="8" maxlength="60" required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="image" class="control-label mb-1">Imagen:</label>
+                                <input type="file" accept="image/*" class="form-control imagejs"  name="image"
+                                       id="image" value =''    {% if  action == 'add' %} required="true" {% endif %}>
+                                <input  type="text" class="form-control text-center"
+                                        disabled
+                                        value ='{{ empleado.image }}'>
+                            </div>
+
+                        </div><!--/.col-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {% if action == 'ver' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-info"> <i class="fa fa-window-close"> Cerrar</i> </a>
+                    {% endif %}
+                    {% if action == 'add' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-danger"> <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-success">
+                            <i class="fa fa-save"> Guardar</i></button>
+                    {% endif %}
+                    {% if action == 'edit' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-danger"> <i class="fa fa-remove"> Cancelar</i>
+                        </a>
+                        <button type="submit" id="Dato" class="btn btn-success">
+                            <i class="fa fa-save"> Guardar</i></button>
+                    {% endif %}
+                    {% if action == 'elim' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-light">
+                            <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-danger">
+                            <i class="fa fa-save"> Eliminar</i></button>
+                    {% endif %}
+                </div>
+            </form>
+        </div></div>
+{% endblock %}
+{% block jscript %}
+    <script type='text/javascript'>
+        $('.chosen-select').chosen();
+        $('#Dato').click(function(){
+            if (!($('#sucursal').val() >0)) {
+                if ('add'=='{{ action }}'){
+                    Swal.fire({
+                        title: 'Información!',
+                        icon: 'info',
+                        text: 'Por favor elegir una Sucursal',
+                        html:'{{ message }}',
+                        showCloseButton: true,
+                        confirmButtonColor: "#33ECFF",
+                        confirmButtonText: 'OK',
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    });
+                    return false;}
+            }
+            if (!($('#group').val() >0)) {
+                if ('add'=='{{ action }}'){
+                    Swal.fire({
+                        title: 'Información!',
+                        icon: 'info',
+                        text: 'Por favor elegir un Rol',
+                        html:'{{ message }}',
+                        showCloseButton: true,
+                        confirmButtonColor: "#33ECFF",
+                        confirmButtonText: 'OK',
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    });
+                    return false;}
+            }
+            $("input").prop('disabled', false);      });
+
+
+        if ('ver'=='{{ action }}' || 'elim' =='{{ action }}'){
+            $('input').prop("disabled", true);
+        }
+
+
+
+        $('.imagejs').on('change',function () {
+            var rutaimg = $('.imagejs').val();
+            var extension = rutaimg.substring(rutaimg.length - 3, rutaimg.length);
+            if (extension.toLowerCase() === 'png' || extension.toLowerCase() === 'jpg'  || extension.toLowerCase() === 'peg') {
+                $('.imagejs').fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
+            }
+            else{
+                $(".imagejs").val('');
+                Swal.fire({
+                    title: 'Información!',
+                    icon: 'info',
+                    text: 'Por favor elegir una imagen',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#33ECFF",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            }});
+        $('#changecontra').click(function(){
+            document.getElementById('password').value = ''
+            document.getElementById('chancontr').value = '1'
+            return false;
+
+        });
+        $("#clipassword").mouseleave(function(e){
+            document.getElementById('password').type = 'password'
+
+        });
+        $('#clipassword').mouseenter(function (event) {
+            document.getElementById('password').type = 'text'
+
+        });
+
+
+        $("#username").change(function(){
+            if ('add'=='{{ action }}'){
+                $.ajax({
+                    type:"GET",
+                    url: '{{ ruta }}',
+                    data: {
+                        'action':'verificar','username':$('#username').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+
+                        if (data.resp == true) {
+                            document.getElementById("username").style.borderColor = "blue";
+                            return true;
+                        } else {
+                            document.getElementById("username").focus();
+                            Swal.fire({
+                                title: 'Información!',
+                                icon: 'info',
+                                text: 'Error nombre de usuario ya existe',
+                                html:'Error nombre de usuario: '+ $('#username').val()+'  ya existe',
+                                showCloseButton: true,
+                                confirmButtonColor: "#33ECFF",
+                                confirmButtonText: 'OK',
+                                imageWidth: 400,
+                                imageHeight: 200,
+                                imageAlt: 'Custom image',
+                            });
+                            document.getElementById("username").style.borderColor = "red";
+                            document.getElementById("username").value= "";
+
+                            return  false;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

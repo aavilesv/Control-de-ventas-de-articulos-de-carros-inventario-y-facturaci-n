@@ -1,0 +1,195 @@
+{% extends 'projecbase.html' %}
+{% load staticfiles %}
+{% block contenid %}
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group text">
+                     <ul class="list-inline">
+                    <li class="list-inline-item">
+                                    <span class="badge badge-secondary">
+                                    <i class="pe-7s-note2 fa-2x"></i></span></li>
+                    <li class="list-inline-item">     <h2 class="text-secondary"><strong>
+
+                                     {{ saludo }}
+
+                        </strong></h2>
+                    </li>
+                </ul>
+            </div>
+            </div> <div class="card-body">
+           <h2> <span class="badge badge-info">Registro Total de datos en tablas</span></h2>
+            <br><br>
+                    <div class="row">
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-flat-color-1">
+                                <div class="card-body">
+                                    <div class="card-left pt-1 float-left">
+                                        <h3 class="mb-0 fw-r">
+                                            <span class="currency float-left mr-1"></span>
+                                            <span class="count">{{ user }}</span>
+                                        </h3>
+                                        <p class="text-light mt-1 m-0">Total de Usuarios</p>
+                                    </div><!-- /.card-left -->
+
+                                    <div class="card-right float-right text-right">
+                                        <i class="icon fade-5 icon-lg pe-7s-user"></i>
+                                    </div><!-- /.card-right -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--/.col-->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-flat-color-6">
+                                <div class="card-body">
+
+                                    <div class="card-left pt-1 float-left">
+
+                                        <h3 class="mb-0 fw-r">
+                                            <span class="currency float-left mr-1"></span>
+<span class="count">{{ articulo }}</span>
+                                        </h3>
+                                        <p class="text-light mt-1 m-0">Total de Articulos</p>
+                                    </div><!-- /.card-left -->
+
+
+
+
+                                    <div class="card-right float-right text-right">
+                                                                                <i class="icon fade-5 icon-lg pe-7s-car"></i>
+
+
+                                    </div><!-- /.card-right -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--/.col-->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-flat-color-3">
+                                <div class="card-body">
+                                    <div class="card-left pt-1 float-left">
+                                        <h3 class="mb-0 fw-r">
+                                            <span class="count">{{ cliente }}</span>
+                                        </h3>
+                                        <p class="text-light mt-1 m-0">Total de clientes</p>
+                                    </div><!-- /.card-left -->
+
+                                    <div class="card-right float-right text-right">
+                                        <i class="icon fade-5 icon-lg  pe-7s-users"></i>
+                                    </div><!-- /.card-right -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-flat-color-2">
+                                <div class="card-body">
+                                    <div class="card-left pt-1 float-left">
+                                        <h3 class="mb-0 fw-r">
+                                            <span class="count">{{ proveedor }}</span>
+                                        </h3>
+                                        <p class="text-light mt-1 m-0">Total de proveedor</p>
+                                    </div><!-- /.card-left -->
+
+                                    <div class="card-right float-right text-right">
+                                        <i class="icon fade-5 icon-lg  pe-7s-cart"></i>
+                                    </div><!-- /.card-right -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-flat-color-3">
+                                <div class="card-body">
+                                    <div class="card-left pt-1 float-left">
+                                        <h3 class="mb-0 fw-r">
+                                            <span class="count">{{ sucursal }}</span>
+                                        </h3>
+                                        <p class="text-light mt-1 m-0">Total de Sucursales</p>
+                                    </div><!-- /.card-left -->
+
+                                    <div class="card-right float-right text-right">
+                                        <i class="icon fade-5 icon-lg  fa fa-building-o"></i>
+                                    </div><!-- /.card-right -->
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-flat-color-4">
+                                <div class="card-body">
+                                    <div class="card-left pt-1 float-left">
+                                        <h3 class="mb-0 fw-r">
+                                            <span class="count">{{ venta }}</span>
+                                        </h3>
+                                        <p class="text-light mt-1 m-0">Total de ventas</p>
+                                    </div><!-- /.card-left -->
+
+                                    <div class="card-right float-right text-right">
+                                        <i class="icon fade-5 icon-lg  ti-shopping-cart-full"></i>
+                                    </div><!-- /.card-right -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-flat-color-5">
+                                <div class="card-body">
+                                    <div class="card-left pt-1 float-left">
+                                        <h3 class="mb-0 fw-r">
+                                            <span class="count">{{ compra }}</span>
+                                        </h3>
+                                        <p class="text-light mt-1 m-0">Total de compras</p>
+                                    </div><!-- /.card-left -->
+
+                                    <div class="card-right float-right text-right">
+                                        <i class="icon fade-5 icon-lg  ti-support"></i>
+                                    </div><!-- /.card-right -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-flat-color-3">
+                                <div class="card-body">
+                                    <div class="card-left pt-1 float-left">
+                                        <h3 class="mb-0 fw-r">
+                                            <span class="count">{{ marca }}</span>
+                                        </h3>
+                                        <p class="text-light mt-1 m-0">Total de marca</p>
+                                    </div><!-- /.card-left -->
+
+                                    <div class="card-right float-right text-right">
+                                        <i class="icon fade-5 icon-lg  ti-layout-media-overlay-alt"></i>
+                                    </div><!-- /.card-right -->
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!--/.col-->
+
+                        <!--/.col-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+{% endblock %}

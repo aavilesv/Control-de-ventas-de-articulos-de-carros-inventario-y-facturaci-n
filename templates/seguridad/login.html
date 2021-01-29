@@ -1,0 +1,68 @@
+{% extends 'loginbase.html' %}
+{% load staticfiles %}
+{% block contenid %}
+    <img class="wave" src="/static/img/wave.png">
+    <div class="container">
+        <div class="img">
+            <img src="/static/img/security.svg">
+        </div>
+        <div class="login-content">
+            <form id="frm-login"  method="post">
+                {% csrf_token %}
+                <img src="/static/img/profile.svg">
+                <h2 class="title">BIENVENIDO</h2>
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div"><br>
+                        <input type="text" placeholder="Nombre de usuario"  onKeyPress="return sololetrasynumeros(event)" required="true" name="usuario" class="input">
+                    </div>
+                </div>
+                <div class="input-div pass">
+                    <div class="i">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="div">
+                        <input type="password" placeholder="Contraseña" required="true"  name="password" class="input">
+                    </div>
+                </div>
+    <a href="/seguridad/recuperar/">¿Se te olvidó tu contraseña?</a>
+                <button type="submit" id="btnlogin" class="btn"/>Ingresar
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block jscript %}
+<script>
+
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    title: 'Información!',
+                    text: '{{ message }}',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#71C78D",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            {% endfor %}
+        {% endif %}
+
+
+function sololetrasynumeros(e) {
+
+       tecla = (document.all) ? e.keyCode : e.which; // 2
+    if (tecla == 8)
+        return true; // 3
+    patron = /[A-Za-z\9123456780]/; // 4
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
+    }
+</script>
+
+    <script src="{% static "js/jsd.js"%}"></script>
+{% endblock %}

@@ -1,0 +1,182 @@
+
+{% load staticfiles %}
+{% block frmodal %}
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"> <i class="fa fa-building fa-2x"></i></li>
+                        <li class="list-inline-item">
+                            <h3>  <strong class="card-title">{{ model }}</strong>
+                            </h3>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+            <form method="POST" action="{{ ruta }}" onsubmit="return todo()" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <input type="hidden" name="action" value="{{ action }}">
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <div class="row">
+                                <div class="col-6">
+
+                            <div class="form-group has-success">
+                                <label for="razonsocial" class="control-label mb-1">Razón Social:</label>
+                                <input id="razonsocial" name="razonsocial" type="text" class="form-control valid" data-val="true"
+                                       data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                       aria-invalid="false" aria-describedby="cc-name"
+                                       minlength="4" maxlength="50" value ='{{ sucursal.razonsocial }}' required="true">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div></div>
+<div class="col-6">
+                                    <div class="form-group">
+                                        <label for="ruc" class="control-label mb-1">Ruc:</label>
+                                        <input id="ruc" name="ruc" type="text" class="form-control cc-name valid"
+                                               minlength="13" maxlength="13" onKeyPress="return soloNumeros(event)"
+                                               data-val="true" data-val-required="Please enter the name on card" autocomplete="cc-name" required="true"
+                                               value ='{{ sucursal.ruc }}'>
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-6">
+
+                            <div class="form-group has-success">
+                                <label for="email" class="control-label mb-1">Email:</label>
+                                <input id="email" name="email" type="email"
+                                       class="form-control cc-name valid" data-val="true"
+                                       autocomplete="cc-name" value ='{{ sucursal.email }}' minlength="8" maxlength="60" required="true">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="celular" class="control-label mb-1">Telefono:</label>
+                                        <input type="text" class="form-control " name="celular" minlength="7" maxlength="10" onKeyPress="return soloNumeros(event)"
+                                               id="celular" value ='{{ sucursal.celular }}' required="true" >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+
+  <div class="form-group has-success">
+                                <label for="direcion" class="control-label mb-1">Dirección:</label>
+                                <input id="direcion" name="direcion" type="text"
+                                       class="form-control cc-name valid" data-val="true"
+                                       autocomplete="cc-name" value ='{{ sucursal.direcion }}' minlength="4" maxlength="50" required="true">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="canton" class="control-label mb-1">Ciudad:</label>
+                                        <input type="text" class="form-control " name="canton" minlength="4" maxlength="30" onKeyPress="return sololetrassin(event)"
+                                               id="canton" value ='{{ sucursal.canton }}' required="true" >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+
+  <div class="form-group has-success">
+                                <label for="provincia" class="control-label mb-1">Provincia:</label>
+                                <input id="provincia" name="provincia" type="text"
+                                       class="form-control cc-name valid" data-val="true" onKeyPress="return sololetrassin(event)"
+                                       autocomplete="cc-name" value ='{{ sucursal.provincia }}' minlength="4" maxlength="30" required="true">
+                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                            </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="status" class="control-label mb-1">Estado:</label>
+                                        <input type="checkbox" class="form-control " name="status"
+                                               id="status" value ='{{ sucursal.status }}'>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="image" class="control-label mb-1">Imagen:</label>
+                                <input type="file" accept="image/*" class="form-control imagejs"  name="image"
+                                       id="image" value =''    {% if  action == 'add' %} required="true" {% endif %}>
+                                <input  type="text" class="form-control text-center"
+                                        disabled
+                                        value ='{{ sucursal.image }}'>
+                            </div>
+                        </div><!--/.col-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                 {% if action == 'ver' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-info"> <i class="fa fa-window-close"> Cerrar</i> </a>
+                    {% endif %}
+                        {% if action == 'add' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-danger"> <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-success">
+                            <i class="fa fa-save"> Guardar</i></button>
+                    {% endif %}
+                    {% if action == 'edit' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-danger"> <i class="fa fa-remove"> Cancelar</i>
+                        </a>
+                        <button type="submit" id="Dato" class="btn btn-success">
+                            <i class="fa fa-save"> Guardar</i></button>
+                    {% endif %}
+                       {% if action == 'elim' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-light">
+                            <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-danger">
+                            <i class="fa fa-save"> Eliminar</i></button>
+                    {% endif %}
+                </div>
+            </form>
+        </div></div>
+{% endblock %}
+{% block jscript %}
+    <script type='text/javascript'>
+      $('#Dato').click(function(){
+            $("input").prop('disabled', false);
+        });
+          if ('ver'=='{{ action }}' || 'elim' =='{{ action }}'){
+         $('input').prop("disabled", true);
+        }
+        $('.imagejs').on('change',function () {
+            var rutaimg = $('.imagejs').val();
+            var extension = rutaimg.substring(rutaimg.length - 3, rutaimg.length);
+            if (extension.toLowerCase() === 'png' || extension.toLowerCase() === 'jpg'  || extension.toLowerCase() === 'peg') {
+                $('.imagejs').fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
+            }
+            else{
+                $(".imagejs").val('');
+                Swal.fire({
+                    title: 'Información!',
+                    icon: 'info',
+                    text: 'Por favor elegir una imagen',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#33ECFF",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            }});
+
+           {% if  sucursal.status %}
+            $("#status").prop("checked", true);
+            {% endif %}
+    </script>
+{% endblock %}

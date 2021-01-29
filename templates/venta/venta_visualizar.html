@@ -1,0 +1,149 @@
+
+{% load staticfiles %}
+{% block frmodal %}
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"> <i class="fa fa-file-text-o fa-2x"></i></li>
+                        <li class="list-inline-item">
+                            <h3>  <strong class="card-title">VENTA</strong>
+                            </h3>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+                        <div class="modal-body">
+
+
+            <div class="card">
+                <div class="card-body">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="razonsocial" class="control-label mb-1">Realizada por:</label>
+
+                                        <input id="razonsocial" name="razonsocial" type="text" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="50" value ='{{ usuario.first_name }} {{ usuario.last_name }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+            </div>
+            <div class="col-lg-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="razonsocial" class="control-label mb-1">Fecha de Venta:</label>
+                                        <input id="razonsocial" name="razonsocial" type="text" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="50" value ='{{ venta.fechaventa }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+            </div>
+             <div class="col-lg-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="razonsocial" class="control-label mb-1">Cliente:</label>
+                                        <input id="razonsocial" name="razonsocial" type="text" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="50" value ='{{ venta.cliente.nombre }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+            </div>
+             <div class="col-lg-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="razonsocial" class="control-label mb-1">Subtotal:</label>
+                                        <input id="razonsocial" name="razonsocial" type="text" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="50" value ='${{ venta.subtotal }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+            </div>
+             <div class="col-lg-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="razonsocial" class="control-label mb-1">Iva:</label>
+                                        <input id="razonsocial" name="razonsocial" type="text" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="50" value ='${{ venta.iva }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+            </div>
+             <div class="col-lg-6">
+
+                                    <div class="form-group has-success">
+                                        <label for="razonsocial" class="control-label mb-1">Total:</label>
+                                        <input id="razonsocial" name="razonsocial" type="text" class="form-control valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name" aria-required="true"
+                                               aria-invalid="false" aria-describedby="cc-name"
+                                               minlength="4" maxlength="50" value ='${{ venta.total }}' required="true">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Articulo</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for detel in detalle %}
+                            <tr>
+                                <th scope="row">{{ detel.articulo.id }}</th>
+                                <td>{{ detel.articulo.nombre }}</td>
+                                <td>{{ detel.cantidad }}</td>
+                                <td>{{ detel.total }}</td>
+                                <td>{{ detel.preciototal }}</td>
+                            </tr>{% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+                </div>
+                <div class="modal-footer">
+                    {% if action == 'ver' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-info"> <i class="fa fa-window-close"> Cerrar</i> </a>
+                    {% endif %}
+
+                    {% if action == 'elim' %}
+                        <a href="{{ ruta }}" id="btnSalir" class="btn btn-light">
+                            <i class="fa fa-remove"> Cancelar</i> </a>
+                        <button type="submit" id="Dato" class="btn btn-danger">
+                            <i class="fa fa-save"> Eliminar</i></button>
+                    {% endif %}
+                </div>
+            </form>
+        </div></div>
+{% endblock %}
+{% block jscript %}
+    <script type='text/javascript'>
+        $('#Dato').click(function(){
+            $("input").prop('disabled', false);
+        });
+        if ('ver'=='{{ action }}' || 'elim' =='{{ action }}'){
+            $('input').prop("disabled", true);
+        }
+
+    </script>
+{% endblock %}

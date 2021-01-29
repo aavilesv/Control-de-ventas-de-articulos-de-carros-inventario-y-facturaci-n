@@ -1,0 +1,245 @@
+{% extends 'projecbase.html' %}
+{% load staticfiles %}
+{% block contenid %}
+    <div class="card">
+        <div class="card-header">
+            <div class="form-group text">
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                                    <span class="badge badge-secondary">
+                                    <i class="fa fa-plus-square-o fa-2x"></i></span></li>
+                    <li class="list-inline-item">     <h2 class="text-secondary"><strong>{% if  venta.count == 1 %}
+                        {{ model }}
+                    {% elif venta.count > 1 %}
+                        {{ model }}s
+                    {% else %}
+                        {{ model }}
+                    {% endif %}</strong></h2>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group text">
+                        <br>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <span class="hint--bottom-left  hint--success"
+                                      aria-label="Nuevo Registro">
+                                    <button  data-json='{"action":"add","id":""}'
+                                             data-backdrop="static" data-keyboard="false" class="btn btn-success btn-md"  value="1"
+                                             href="#"  rel="action" data-toggle="modal">
+
+                                    <i class="fa fa-plus"></i>
+                                </button></span>
+                            </li>
+                            <li class="list-inline-item">
+                                  <span class="hint--bottom-left  hint--info" aria-label="Imprimir">
+
+                                          <a
+                                                  href="{{ ruta }}?imprime=imprimir"
+                                                  class="btn btn-outline-info btn-md hint--bottom-left  hint--info"
+                                                  data-original-title="Imprimir"  target="_blank">
+                                                <i class="ti-printer"></i>
+                                            </a>
+                                    </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content-panel">
+                        <div class="table-responsive">
+                            <table id="" cellspacing="0" width="100%"
+                                   class="table table-striped table-bordered table-advance table-hover display nowrap myTable">
+                                <thead>
+                                <tr class="table-info">
+
+
+                                    <th>
+                                        <i class="ti-clipboard" aria-hidden="true"> #Factura</i>
+                                    </th>
+
+                                    <th>
+                                        <i class="ti-user" aria-hidden="true"> Cliente</i>
+                                    </th>
+                                    <th>
+                                        <i class="ti-time" aria-hidden="true"> Fecha de venta</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-money" aria-hidden="true"> Descuento</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-money" aria-hidden="true"> Iva</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-money" aria-hidden="true"> Subtotal</i>
+                                    </th>
+
+                                    <th>
+                                        <i class="fa fa-money" aria-hidden="true"> Total</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa  fa-check-square-o" aria-hidden="true"> Estado</i>
+                                    </th>
+                                    <th>
+                                        <i class="fa fa-cog" aria-hidden="true"> Acción</i>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for comp in venta %}
+                                    <tr class="p-0 m-0">
+                                        <td class="p-2 m-0">{{ comp.id }}</td>
+
+                                        <td class="p-2 m-0">{{ comp.cliente.nombre }}</td>
+
+                                        <td class="p-2 m-0">{{ comp.fechaventa }}</td>
+                                        <td class="p-2 m-0">&#36;{{ comp.descuento }}</td>
+                                        <td class="p-2 m-0">&#36;{{ comp.iva }}</td>
+
+                                        <td class="p-2 m-0">&#36;{{ comp.subtotal }}</td>
+                                        <td class="p-2 m-0">&#36;{{ comp.total }}</td>
+                                        <td class="p-2 m-0">      {% if comp.status %}
+                                            <span class="badge badge-success">Activo</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">Anulada</span>
+                                        {% endif %}</td>
+
+                                        <td class="p-2 m-0 text-center">
+                                            <!--<button  data-json='{"action":"ver","id":"{{ comp.id }}"}'
+                                                     data-backdrop="static" data-keyboard="false" class="btn btn-success btn-sm rounded-circle"  value="1">
+                                    <span class="hint--bottom-left  hint--success"
+                                          aria-label="Ver">
+                                    <i class="ti-eye"></i></span>
+                                            </button>-->
+                                            <button  onclick="myFunction('{{ ruta }}?action=ver&id='+ '{{ comp.id }}')"
+                                                     data-backdrop="static" data-keyboard="false" class="btn btn-success btn-sm rounded-circle"
+                                                     value="1" href="#verventa"  rel="action" data-toggle="modal">
+                                    <span class="hint--bottom-left  hint--success"
+                                          aria-label="Ver">
+                                    <i class="ti-eye"></i></span>
+                                            </button>
+                                            {% if  comp.status %}
+                                                <button data-json='{"action":"elim","id":"{{ comp.id }}"}' href="#ventamodal" data-toggle="modal" rel="action"
+                                                        data-backdrop="static" data-keyboard="false"  class="btn
+                                                        btn-danger rounded-circle btn-sm button"   data-toggle="modal">
+                                    <span class="hint--bottom-left  hint--error"
+                                          aria-label="Anular"><i class="fa fa-minus"></i>
+                                    </span>
+                                                </button>
+                                            {% endif %}
+
+                                            <span class="hint--bottom-left  hint--info" aria-label="Imprimir">
+                                          <a
+                                                  href="{{ ruta }}?imprimeunidad=imprimir&id={{ comp.id }}"
+                                                  class="btn btn-info btn-sm rounded-circle hint--bottom-left  hint--info"
+                                                  data-original-title="Imprimir"  target="_blank">
+                                                <i class="ti-printer"></i>
+                                            </a>
+                                    </span>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="100"> <center>No existen registros</center></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- .card -->
+        </div><!--/.col-->
+    </div>
+{% endblock %}
+{% block frmodal %}
+    <div class="modal fade" id="ventamodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form name="frmEliminar" id="frmEliminar" method="POST" action="{{ ruta }}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Anular Registro en Venta.</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="id" value="">
+                        <input type="hidden" name="action" value="elim">
+                        <label>Proveedor:</label>
+                        <span id="descripcion"></span><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger" id="btnElimiar">Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Final Formulario Modal-->
+
+    <div class="modal face animated rotateIn" id="verventa"  role="dialog">
+    </div>
+    <!-- Final Formulario Modal-->
+{% endblock %}
+{% block jscript %}
+    <script>
+        $('button').on('click', function () {
+            var data = $(this).data('json'),
+                action = data.action,
+                id = data.id;
+            if (action == 'elim') {
+                var desc = $(this).parents('tr').children('td').eq(0).html();
+                $('#descripcion').html(desc);
+                $('#frmEliminar #id').val(id);
+                $('#ventamodal').modal();
+                //return
+            }
+            window.location = '{{ ruta }}?action=' + action + '&id=' + id;
+        });
+
+        function myFunction(url) {
+            $('#verventa').load(url,function () {
+                $('#verventa').modal({backdrop: 'static', keyboard: false,show:true,remote:false});
+            });
+            return false;
+        }
+
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    title: 'Información!',
+                    text: '{{ message }}',
+                    html:'{{ message }}',
+                    showCloseButton: true,
+                    confirmButtonColor: "#71C78D",
+                    confirmButtonText: 'OK',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Custom image',
+                });
+            {% endfor %}
+        {% endif %}
+        $("#btnPdf").click(function() {
+            alert("Handler for .click() called.");
+            $.ajax({
+                type:"GET",
+                url: '{{ ruta }}',
+                data: {
+                    'action':'imprimir'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.resp == true) {
+                        window.location.reload();
+                    } else {
+                        alert('holasdsd');
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
